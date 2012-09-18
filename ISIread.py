@@ -14,6 +14,15 @@ try:
 	# connect
 	con = mdb.connect('host', 'user', 'password', 'db_name');
 
+	# laptop
+	# con = mdb.connect('localhost', 'root', '123456789', 'isi');
+
+	# choroid
+	# con = mdb.connect('choroid.stanford.edu', 'minerva_r2', 'hohNeet4', 'mimir_dev');
+
+	# on janet
+	con = mdb.connect(host = '127.0.0.1', user = 'mimir', passwd = 'andtheshadowoftheday', db = 'mimir', port = 3306);
+
 	cur = con.cursor()
 	cur.execute("SELECT VERSION()")
 
