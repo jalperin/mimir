@@ -58,9 +58,6 @@ except mdb.Error, e:
 
 init_time = time.time()
 
-
-SSH_SUBJECT_CODES = set(['BF', 'BI', 'BK', 'BM', 'BP', 'OR', 'CN', 'DI', 'DK', 'EO', 'EU', 'FA', 'FE', 'EN', 'FS', 'FU', 'GY', 'HA', 'HB', 'HE', 'JB', 'HF', 'JM', 'JO', 'JS', 'JW', 'KU', 'KU', 'KV', 'MM', 'MQ', 'MR', 'MW', 'BQ', 'NM', 'NU', 'OE', 'OY', 'OM', 'OT', 'OZ', 'OX', 'PA', 'PD', 'PF', 'PG', 'PH', 'PH', 'QC', 'QD', 'QL', 'PC', 'OO', 'RO', 'RP', 'PE', 'UA', 'UQ', 'UT', 'UU', 'VI', 'NQ', 'BV', 'EQ', 'MY', 'MY', 'HI', 'VX', 'VS', 'VJ', 'VP', 'WQ', 'VM', 'NE', 'YI', 'WM', 'WV', 'WU', 'PS', 'WY', 'XA', 'YE', 'YG', 'YY'])
-
 journals = cur.fetchall()
 
 #construct a set to make test faster
