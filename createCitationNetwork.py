@@ -25,7 +25,7 @@ try:
 	# con = mdb.connect('choroid.stanford.edu', 'minerva_r2', 'hohNeet4', 'mimir_dev');
 
 	# on janet
-	con = mdb.connect(host = '127.0.0.1', user = 'iriss', passwd = '1s1data', db = 'I', port = 3307);
+	con = mdb.connect(host = '127.0.0.1', user = 'iriss', passwd = '1s1data', db = 'I', port = 5029);
 
 	cur = con.cursor()
 	cur.execute("SELECT VERSION()")
