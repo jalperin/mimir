@@ -112,6 +112,29 @@ for j in journals:
         print "Error on Citation Missing SELECT %d: %s" % (e.args[0],e.args[1])
         sys.exit(1)
 
+    try:
+        cur.execute("""SELECT count(a.Article_Key)
+                        FROM Article a JOIN Issue i ON (i.Issue_Key = a.Issue_Key)
+                        WHERE a.Year = %s AND i.Name = %s;""", (YEAR, j[0]))
+        row = cur.fetchone()
+
+        nodes[j[0]].append(row[0])    # add a set with all the subjects
+    except mdb.Error, e:
+        print "Error on Citation Missing SELECT %d: %s" % (e.args[0],e.args[1])
+        sys.exit(1)
+
+    try:
+        cur.execute("""SELECT DISTINCT ad.Country
+                        FROM Address ad JOIN Article a ON (ad.Article_Key = a.Article_Key)
+                        JOIN Issue i ON (i.Issue_Key = a.Issue_Key)
+                        WHERE a.Year = %s AND i.Name = %s;""", (YEAR, j[0]))
+        data = cur.fetchall()
+
+        nodes[j[0]].append(set([x[0] for x in data]))    # add a set with all the subjects
+    except mdb.Error, e:
+        print "Error on Citation Missing SELECT %d: %s" % (e.args[0],e.args[1])
+        sys.exit(1)
+
 cPickle.dump(nodes, open('nodes_'+ str(YEAR) + '.cPickle', 'wb'))
 print "added %s nodes in %s minutes" % (len(nodes), (time.time()-init_time) / 60.0)
 
