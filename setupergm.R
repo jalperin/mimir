@@ -31,7 +31,7 @@ net %v% "income_level" = as.character(nodes$income_level)
 set.edge.attribute(net, "weight", edges$V4) 
 
 maxNumDyads=network.size(net)^2
-control=control.ergm(MPLE.max.dyad.types=maxNumDyads, MCMC.burnin=300000, MCMC.samplesize=100000)
+control=control.ergm(MPLE.max.dyad.types=maxNumDyads, MCMC.burnin=300000, MCMC.samplesize=100000, MCMLE.maxit=5, parallel=7)
 
 #control=control.ergm(MPLE.max.dyad.types=maxNumDyads, MCMC.burnin=300000, MCMC.samplesize=100000, parallel=7)
 
