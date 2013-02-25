@@ -1,5 +1,8 @@
-library(ergm)
+setwd('~/Code/git/mimir')
+
 library(network)
+library(ergm)
+# library(ergm.userterms)
 
 if (!exists('YEAR'))
   YEAR = '2005'
@@ -18,10 +21,22 @@ edges$V3 = NULL
 
 net = network(edges, directed=TRUE)
 
+# this is stupid, but we have to read it again for the edge values
+edges=read.csv(paste('data/G', YEAR, '_', CITATION_WINDOW, '_', CODE, '_numeric.edgelist', sep=''), sep=' ', header=FALSE)
+edges$V3 = NULL
+edges$V4 = as.numeric(gsub("}", "", edges$V4))
+
 net %v% "missing" = nodes$missing
 net %v% "region" = as.character(nodes$region)
 net %v% "country" = as.character(nodes$iso)
 net %v% "income_level" = as.character(nodes$income_level)
+set.edge.attribute(net, "weight", edges$V4) 
 
 maxNumDyads=network.size(net)^2
-control=control.ergm(MPLE.max.dyad.types=maxNumDyads, MCMC.burnin=1000000, MCMC.samplesize=300000, parallel=7)
+control=control.ergm(MPLE.max.dyad.types=maxNumDyads, MCMC.burnin=300000, MCMC.samplesize=100000)
+
+#control=control.ergm(MPLE.max.dyad.types=maxNumDyads, MCMC.burnin=300000, MCMC.samplesize=100000, parallel=7)
+
+# pkgs = names(sessionInfo()$otherPkgs)
+# pkgs = paste('package:', pkgs, sep = "")
+# lapply(pkgs, detach, character.only = TRUE, unload = TRUE)
