@@ -31,7 +31,7 @@ worldbankdata = {}
 for entry in wbCsv:
     worldbankdata[entry[0]] = entry[1:]
 
-nodes = cPickle.load(open('nodes_2005.cPickle'))
+nodes = cPickle.load(open('data/nodes_' + str(YEAR) + '.cPickle'))
 
 for k,v in nodes.iteritems():
     country = nodes[k][0]
@@ -42,7 +42,7 @@ for k,v in nodes.iteritems():
 
 outfilename = 'G%s_%s' % (YEAR, CITATION_WINDOW)
 
-G_weighted=cPickle.load(open(outfilename + '_weighted.cPickle'))
+G_weighted=cPickle.load(open('data/' + outfilename + '_weighted.cPickle'))
 
 outfilename += '_' + CODE
 
@@ -52,18 +52,27 @@ filtered = dict((k,v) for k,v in nodes.iteritems() if v[3].intersection(SS_SUBJE
 # make a subgraph of only those journals
 SG = G_weighted.subgraph(filtered.keys())
 
+fieldnames += ['self_cites', 'total_cites']
+for node in SG.nodes_iter():
+    self_cites = 0
+    total_cites = 0;
+    for neighbor in SG.neighbors(node):
+        if node == neighbor: self_cites += SG[node][neighbor]['weight']
+        else: total_cites+= SG[node][neighbor]['weight']
+    nodes[node] += [self_cites, total_cites]
+
 # convert nodes to numeric (statnet requires it)
 SG_numeric=nx.convert_node_labels_to_integers(SG,first_label=1, discard_old_labels=False)
 
-nx.write_edgelist(SG_numeric, outfilename + '_numeric.edgelist', data=True)
+nx.write_edgelist(SG_numeric, 'data/' + outfilename + '_numeric.edgelist', data=True)
 
-nodeoutfile = open('nodes' + str(YEAR) + '_' + CODE + '_numeric.csv', 'wb')
+nodeoutfile = open('data/nodes' + str(YEAR) + '_' + CODE + '_numeric.csv', 'wb')
 nodesCsv = csv.writer(nodeoutfile)
 
-headers = ['id', 'name', 'isi_country', 'missing', 'num_citations_out', 'subject_codes'] + fieldnames[1:]
+headers = ['id', 'name', 'isi_country', 'missing', 'num_citations_out', 'subject_codes', 'num_articles', 'num_author_countries'] + fieldnames[1:]
 nodesCsv.writerow(headers)
 for k, v in SG_numeric.node_labels.iteritems():
-    nodesCsv.writerow([v, k] + nodes[k][0:3] + [';'.join(nodes[k][3])] + nodes[k][4:])
+    nodesCsv.writerow([v, k] + nodes[k][0:3] + [';'.join(nodes[k][3])] + [nodes[k][4], len(nodes[k][5])] + nodes[k][6:])
 
 nodeoutfile.close()
 
