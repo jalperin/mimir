@@ -1,5 +1,3 @@
-setwd('~/Code/git/mimir')
-
 library(network)
 library(ergm)
 # library(ergm.userterms)
