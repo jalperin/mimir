@@ -130,7 +130,7 @@ for j in journals:
                         WHERE a.Year = %s AND i.Name = %s;""", (YEAR, j[0]))
         data = cur.fetchall()
 
-        nodes[j[0]].append(set([x[0] for x in data]))    # add a set with all the subjects
+        nodes[j[0]].append(set([x[0] for x in data]))    # add a set with all the countries
     except mdb.Error, e:
         print "Error on Citation Missing SELECT %d: %s" % (e.args[0],e.args[1])
         sys.exit(1)

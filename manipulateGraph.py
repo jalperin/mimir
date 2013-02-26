@@ -52,7 +52,7 @@ filtered = dict((k,v) for k,v in nodes.iteritems() if v[3].intersection(SS_SUBJE
 # make a subgraph of only those journals
 SG = G_weighted.subgraph(filtered.keys())
 
-fieldnames += ['self_cites', 'total_cites']
+fieldnames += ['self_cites', 'other_cites']
 for node in SG.nodes_iter():
     self_cites = 0
     total_cites = 0;
